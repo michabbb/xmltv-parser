@@ -1,0 +1,17 @@
+{
+    "name": "macropage/xmltv-parser",
+    "description": "Parse XMLTV",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Michael Bladowski",
+            "email": "info@macropage.de"
+        }
+    ],
+    "autoload" : {
+      "classmap" : ["src/"]
+    },
+    "minimum-stability": "stable",
+    "require": {}
+}
