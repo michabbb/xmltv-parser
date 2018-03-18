@@ -18,5 +18,3 @@ print_r($Parser->getEpgdata());
 ```
 
 Example call: `parse.php xml/sample.xml`
-
-test packagist
