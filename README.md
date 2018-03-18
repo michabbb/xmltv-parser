@@ -1,5 +1,5 @@
 # xmltv-parser
-Parse XMLTV File
+Parse XMLTV File (epgguide.net)
 
 ```php
 <?php
@@ -17,4 +17,4 @@ try {
 print_r($Parser->getEpgdata());
 ```
 
-Example call: `parse.php de.xml`
+Example call: `parse.php xml/sample.xml`
