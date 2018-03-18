@@ -3,6 +3,9 @@
     "description": "Parse XMLTV",
     "type": "library",
     "license": "MIT",
+    "require": {
+      "php" : ">=7.1"
+    },
     "authors": [
         {
             "name": "Michael Bladowski",
@@ -12,6 +15,5 @@
     "autoload" : {
       "classmap" : ["src/"]
     },
-    "minimum-stability": "stable",
-    "require": {}
+    "minimum-stability": "stable"
 }
