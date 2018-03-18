@@ -12,6 +12,7 @@ class parser {
 	private $channels;
 	private $epgdata;
 	private $channelfilter = [];
+	private $ignoreDescr = [];
 	private $offset        = 'P0Y0DT1H0M0S';
 
 	public function __construct() { }
@@ -86,8 +87,8 @@ class parser {
 					'stop'        => $stop,
 					'title'       => (string)$element->title,
 					'sub-title'   => (string)$element->{'sub-title'},
-					'desc'        => (string)$element->desc,
-					'date'        => (string)$element->date,
+					'desc'        => $this->filterDescr((string)$element->desc),
+					'date'        => (int)(string)$element->date,
 					'country'     => (string)$element->country,
 					'episode-num' => (string)$element->{'episode-num'},
 				];
@@ -100,6 +101,18 @@ class parser {
 
 		$xml->close();
 
+	}
+
+	/**
+	 * @param $descr
+	 *
+	 * @return string
+	 */
+	private function filterDescr($descr): string {
+		if (array_key_exists($descr,$this->ignoreDescr)) {
+			return '';
+		}
+		return $descr;
 	}
 
 	private function channelMatchFilter(string $channel): bool {
@@ -143,6 +156,13 @@ class parser {
 	 */
 	public function setOffset($offset): void {
 		$this->offset = $offset;
+	}
+
+	/**
+	 * @param string $descr
+	 */
+	public function setIgnoreDescr(string $descr): void {
+		$this->ignoreDescr[$descr]=1;
 	}
 
 
