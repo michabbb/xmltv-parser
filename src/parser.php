@@ -82,6 +82,7 @@ class parser {
 				$this->epgdata[(string)$element->attributes()->channel . ' ' . $startDateTime->format('YmdHis')] = [
 					'start'       => $start,
 					'start_raw'   => (string)$element->attributes()->start,
+					'channel'     => (string)$element->attributes()->channel,
 					'stop'        => $stop,
 					'title'       => (string)$element->title,
 					'sub-title'   => (string)$element->{'sub-title'},
@@ -120,7 +121,7 @@ class parser {
 	}
 
 	/**
-	 * @return mixed
+	 * @return array
 	 */
 	public function getEpgdata() {
 		return $this->epgdata;
