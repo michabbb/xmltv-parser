@@ -3,5 +3,11 @@ require 'vendor/autoload.php';
 
 $Parser = new \macropage\xmltv\parser\parser();
 $Parser->setFile($argv[1]);
-$Parser->parse();
-print_r($Parser->getChannels());
+$Parser->setChannelfilter('prosiebenmaxx.de'); //optional
+try {
+	$Parser->parse();
+} catch (Exception $e) {
+	throw new \RuntimeException($e);
+}
+/** @noinspection ForgottenDebugOutputInspection */
+print_r($Parser->getEpgdata());
