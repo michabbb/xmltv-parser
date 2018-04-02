@@ -27,4 +27,10 @@
             <value>12</value>
         </rating>
     </programme>
+    <programme start="20180403221000 +0200" stop="20180403222000 +0200" channel="skycinema.de">
+        <title lang="de">Making of... Kong: Skull Island</title>
+        <desc lang="de">Sarah Valentina Winkhaus entfuehrt die Zuschauer hinter die Kulissen des Films.</desc>
+        <category lang="de">Magazin</category>
+        <icon src="http://skyonline.sky.de/st/bin/EPGEvent/web/event_default.png" />
+    </programme>
 </tv>
