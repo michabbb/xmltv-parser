@@ -3,6 +3,7 @@
 namespace macropage\xmltv\parser;
 
 
+use DateTimeZone;
 use SimpleXMLElement;
 use XMLReader;
 
@@ -13,9 +14,11 @@ class parser {
 	private $epgdata;
 	private $channelfilter = [];
 	private $ignoreDescr = [];
-	private $offset        = 'P0Y0DT1H0M0S';
+	private $targetTimeZone;
 
-	public function __construct() { }
+	public function __construct() {
+		$this->targetTimeZone = date_default_timezone_get();
+	}
 
 	/**
 	 * @throws \RuntimeException
@@ -71,20 +74,21 @@ class parser {
 			) {
 
 				/** @noinspection PhpUndefinedFieldInspection */
-				$start         = str_replace(' +0000', '', (string)$element->attributes()->start);
-				$start         = \DateTime::createFromFormat('YmdHis', $start)->add(new \DateInterval($this->offset))->format('Y-m-d H:i:s');
-				$startDateTime = new \DateTime($start);
+				$start         = \DateTime::createFromFormat('YmdHis P', (string)$element->attributes()->start,new DateTimeZone('UTC'));
+				$start->setTimezone(new DateTimeZone($this->targetTimeZone));
+				$startString = $start->format('Y-m-d H:i:s');
 
 				/** @noinspection PhpUndefinedFieldInspection */
-				$stop = str_replace(' +0000', '', (string)$element->attributes()->stop);
-				$stop = \DateTime::createFromFormat('YmdHis', $stop)->add(new \DateInterval($this->offset))->format('Y-m-d H:i:s');
+				$stop = \DateTime::createFromFormat('YmdHis P', (string)$element->attributes()->stop,new DateTimeZone('UTC'));
+				$stop->setTimezone(new DateTimeZone($this->targetTimeZone));
+				$stopString = $stop->format('Y-m-d H:i:s');
 
 				/** @noinspection PhpUndefinedFieldInspection */
-				$this->epgdata[(string)$element->attributes()->channel . ' ' . $startDateTime->format('YmdHis')] = [
-					'start'       => $start,
+				$this->epgdata[(string)$element->attributes()->channel . ' ' . $startString] = [
+					'start'       => $startString,
 					'start_raw'   => (string)$element->attributes()->start,
 					'channel'     => (string)$element->attributes()->channel,
-					'stop'        => $stop,
+					'stop'        => $stopString,
 					'title'       => (string)$element->title,
 					'sub-title'   => (string)$element->{'sub-title'},
 					'desc'        => $this->filterDescr((string)$element->desc),
@@ -152,17 +156,17 @@ class parser {
 	}
 
 	/**
-	 * @param mixed $offset
-	 */
-	public function setOffset($offset): void {
-		$this->offset = $offset;
-	}
-
-	/**
 	 * @param string $descr
 	 */
 	public function setIgnoreDescr(string $descr): void {
 		$this->ignoreDescr[$descr]=1;
+	}
+
+	/**
+	 * @param mixed $targetTimeZone
+	 */
+	public function setTargetTimeZone($targetTimeZone): void {
+		$this->targetTimeZone = $targetTimeZone;
 	}
 
 
